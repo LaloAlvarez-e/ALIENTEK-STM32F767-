@@ -1,0 +1,7 @@
+eclipse.preferences.version=1
+symbolAutoCompleteHistory<seperator>org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser<seperator>SEGGER\ J-Link\ Emulator_0\\CORTEX_M4_0=0x00000F99
+symbolAutoCompleteHistory<seperator>org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser<seperator>Stellaris\ In-Circuit\ Debug\ Interface_0\\CORTEX_M4_0=0x20000000,pu8DataOut,0x44038000UL,SYSCTL_SYSCTL_PREMAC,SYSCTL_SYSCTL_CCMCGREQ,0x400FE000,0x44030000UL,0x0,0x200128C0,0x20012888,0x2003FB90,0x2003FBA0,0x2003FB34,0x2000A02C,0x2003FEA8
+symbolAutoCompleteHistory<seperator>org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser<seperator>Texas\ Instruments\ XDS110\ USB\ Debug\ Probe_0\\CORTEX_M4_0=0x2003FF58,0x2003FF88,0x2003FF90,0x2003F6E0,0x2003FFC0,0x2003FFB8,0x2003FFF8,0x4005D400,SP,__STACK_TOP,__stack,__ramcode_end__,__ramcode_start__,__ramcode_load__,0x2003FFA0
+symbolAutoCompleteHistory<seperator>org.eclipse.cdt.dsf.debug.ui.disassembly.view<seperator>Stellaris\ In-Circuit\ Debug\ Interface_0\\CORTEX_M4_0=CAN0_ISR,0x20012A74,$C$L12,0xE000EDF8,0x8b36,UART__u32GetFifoData,UART__u32GetData,SYSCTL_SYSCTL_PREMAC,xTask2_JoystickLog,NMI__vIRQVectorHandler,0x0000F0C3,0x0000CC37,0x0000B071,0x00001C65,0xF919
+symbolAutoCompleteHistory<seperator>org.eclipse.cdt.dsf.debug.ui.disassembly.view<seperator>Texas\ Instruments\ XDS110\ USB\ Debug\ Probe_0\\CORTEX_M4_0=0x000008f0,0x000008E0,0x2003F601,0x0000076E,__ramcode_load__,0x00000B43,0xE000EDF8
+useAnnotationsPrefPage=true

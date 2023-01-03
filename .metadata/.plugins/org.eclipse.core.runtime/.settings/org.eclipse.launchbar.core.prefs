@@ -1,0 +1,14 @@
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch=x86_64
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/name=Local
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=win32
+activeLaunchTarget=null\:---
+configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Project
+eclipse.preferences.version=1
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Project/activeLaunchMode=debug
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Project/activeLaunchTarget=null\:---
+org.eclipse.launchbar.core.descriptorType.default\:TM4C129E_Bootloader/activeLaunchMode=run
+org.eclipse.launchbar.core.descriptorType.default\:TM4C129E_Bootloader/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
+org.eclipse.launchbar.core.descriptorType.default\:TM4C129E_DriverLib/activeLaunchMode=run
+org.eclipse.launchbar.core.descriptorType.default\:TM4C129E_DriverLib/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
+org.eclipse.launchbar.core.descriptorType.default\:TM4C129E_Project/activeLaunchMode=debug
+org.eclipse.launchbar.core.descriptorType.default\:TM4C129E_Project/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local

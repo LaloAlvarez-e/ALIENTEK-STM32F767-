@@ -1,0 +1,4 @@
+"./Src/main.o"
+"./Src/syscalls.o"
+"./Src/sysmem.o"
+"./stm32f767_startup.o"

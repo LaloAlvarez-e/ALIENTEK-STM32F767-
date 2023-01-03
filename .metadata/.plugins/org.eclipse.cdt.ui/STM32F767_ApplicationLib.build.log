@@ -1,0 +1,6 @@
+01:29:02 **** Incremental Build of configuration Debug for project STM32F767_ApplicationLib ****
+make -j16 all 
+make: Nothing to be done for 'all'.
+
+01:29:03 Build Finished. 0 errors, 0 warnings. (took 429ms)
+
