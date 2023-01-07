@@ -1,0 +1,321 @@
+/*******************************************************************************/
+/**/
+/* Startup code for use with TI's Code Composer Studio.*/
+/**/
+/* Copyright (c) 2011-2014 Texas Instruments Incorporated.  All rights reserved.*/
+/* Software License Agreement*/
+/* */
+/* Software License Agreement*/
+/**/
+/* Texas Instruments (TI) is supplying this software for use solely and*/
+/* exclusively on TI's microcontroller products. The software is owned by*/
+/* TI and/or its suppliers, and is protected under applicable copyright*/
+/* laws. You may not combine this software with "viral" open-source*/
+/* software in order to form a larger program.*/
+/**/
+/* THIS SOFTWARE IS PROVIDED "AS IS" AND WITH ALL FAULTS.*/
+/* NO WARRANTIES, WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING, BUT*/
+/* NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR*/
+/* A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE. TI SHALL NOT, UNDER ANY*/
+/* CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR CONSEQUENTIAL*/
+/* DAMAGES, FOR ANY REASON WHATSOEVER.*/
+/**/
+/*******************************************************************************/
+
+#include <xUtils/Standard/Standard.h>
+/*#include <xApplication_MCU/Core/SCB/SCB.h>*/
+#include <xDriver_MCU/Common/MCU_Common.h>
+#include <xDriver_MCU/Core/FPU/FPU.h>
+#include <xDriver_MCU/Core/NVIC/NVIC.h>
+/*#include <xApplication_MCU/FLASH/FLASH.h>*/
+
+/*******************************************************************************/
+/**/
+/* Forward declaration of the default fault handlers.*/
+/**/
+/*******************************************************************************/
+void ResetISR(void);
+static void IntDefaultHandler(void);
+
+extern UBase_t _estack;
+extern UBase_t _main_estack;
+
+/*******************************************************************************/
+/**/
+/* The entry point for the application.*/
+/**/
+/*******************************************************************************/
+extern UBase_t main(void);
+
+/*******************************************************************************/
+/**/
+/* Reserve space for the system stack.*/
+/**/
+/*******************************************************************************/
+
+/*******************************************************************************/
+/**/
+/* External declarations for the interrupt handlers used by the application.*/
+/**/
+/*******************************************************************************/
+/* To be added by user*/
+
+/*******************************************************************************/
+/**/
+/* The vector table.  Note that the proper constructs must be placed on this to*/
+/* ensure that it ends up at physical address 0x0000.0000 or at the start of*/
+/* the program if located at a start address other than 0.*/
+/**/
+/*******************************************************************************/
+__attribute__ ((section(".intvecs")))
+void (* const g_pfnVectors[130UL])(void) =
+{
+
+    (void (*)(void))&_main_estack,
+    &ResetISR,
+    &IntDefaultHandler,
+    &IntDefaultHandler,
+    &IntDefaultHandler,
+    &IntDefaultHandler,
+    &IntDefaultHandler,
+    0,
+    0,
+    0,
+    0,
+    &IntDefaultHandler,
+    &IntDefaultHandler,
+    0,
+    &IntDefaultHandler,
+    &IntDefaultHandler,
+    &IntDefaultHandler,                         /* Window Watchdog interrupt                                           */
+    &IntDefaultHandler,                          /* PVD through EXTI line detection                                     */
+    &IntDefaultHandler,                   /* Tamper and TimeStamp interrupts through the EXTI line               */
+    &IntDefaultHandler,                     /* RTC Tamper or TimeStamp /CSS on LSE through EXTI line 19 interrupts */
+    &IntDefaultHandler,                        /* Flash global interrupt                                              */
+    &IntDefaultHandler,                          /* RCC global interrupt                                                */
+    &IntDefaultHandler,                        /* EXTI Line0 interrupt                                                */
+    &IntDefaultHandler,                        /* EXTI Line1 interrupt                                                */
+    &IntDefaultHandler,                        /* EXTI Line2 interrupt                                                */
+    &IntDefaultHandler,                        /* EXTI Line3 interrupt                                                */
+    &IntDefaultHandler,                        /* EXTI Line4 interrupt                                                */
+    &IntDefaultHandler,                 /* DMA1 Stream0 global interrupt                                       */
+    &IntDefaultHandler,                 /* DMA1 Stream1 global interrupt                                       */
+    &IntDefaultHandler,                 /* DMA1 Stream2 global interrupt                                       */
+    &IntDefaultHandler,                 /* DMA1 Stream3 global interrupt                                       */
+    &IntDefaultHandler,                 /* DMA1 Stream4 global interrupt                                       */
+    &IntDefaultHandler,                 /* DMA1 Stream5 global interrupt                                       */
+    &IntDefaultHandler,                 /* DMA1 Stream6 global interrupt                                       */
+    &IntDefaultHandler,                          /* ADC1 global interrupt                                               */
+    &IntDefaultHandler,                      /* CAN1 TX interrupts                                                  */
+    &IntDefaultHandler,                     /* CAN1 RX0 interrupts                                                 */
+    &IntDefaultHandler,                     /* CAN1 RX1 interrupts                                                 */
+    &IntDefaultHandler,                     /* CAN1 SCE interrupt                                                  */
+    &IntDefaultHandler,                      /* EXTI Line[9:5] interrupts                                           */
+    &IntDefaultHandler,                /* TIM1 Break interrupt and TIM9 global interrupt                      */
+    &IntDefaultHandler,                /* TIM1 Update interrupt and TIM10                                     */
+    &IntDefaultHandler,           /* TIM1 Trigger and Commutation interrupts and TIM11 global interrupt  */
+    &IntDefaultHandler,                      /* TIM1 Capture Compare interrupt                                      */
+    &IntDefaultHandler,                         /* TIM2 global interrupt                                               */
+    &IntDefaultHandler,                         /* TIM3 global interrupt                                               */
+    &IntDefaultHandler,                         /* TIM4 global interrupt                                               */
+    &IntDefaultHandler,                      /* I2C1 event interrupt                                                */
+    &IntDefaultHandler,                      /* I2C1 error interrupt                                                */
+    &IntDefaultHandler,                      /* I2C2 event interrupt                                                */
+    &IntDefaultHandler,                      /* I2C2 error interrupt                                                */
+    &IntDefaultHandler,                         /* SPI1 global interrupt                                               */
+    &IntDefaultHandler,                         /* SPI2 global interrupt                                               */
+    &IntDefaultHandler,                       /* USART1 global interrupt                                             */
+    &IntDefaultHandler,                       /* USART2 global interrupt                                             */
+    &IntDefaultHandler,                       /* USART3 global interrupt                                             */
+    &IntDefaultHandler,                    /* EXTI Line[15:10] interrupts                                         */
+    &IntDefaultHandler,                    /* RTC alarms through EXTI line 18 interrupts                          */
+    &IntDefaultHandler,                  /* USB On-The-Go FS Wakeup through EXTI line interrupt                 */
+    &IntDefaultHandler,               /* TIM8 Break interrupt and TIM12 global interrupt                     */
+    &IntDefaultHandler,                /* TIM8 Update interrupt and TIM13 global interrupt                    */
+    &IntDefaultHandler,           /* TIM8 Trigger and Commutation interrupts and TIM14 global interrupt  */
+    &IntDefaultHandler,                      /* TIM8 Capture Compare interrupt                                      */
+    &IntDefaultHandler,                 /* DMA1 Stream7 global interrupt                                       */
+    &IntDefaultHandler,                          /* FMC global interrupt                                                */
+    &IntDefaultHandler,                       /* SDMMC1 global interrupt                                             */
+    &IntDefaultHandler,                         /* TIM5 global interrupt                                               */
+    &IntDefaultHandler,                         /* SPI3 global interrupt                                               */
+    &IntDefaultHandler,                        /* UART4 global interrupt                                              */
+    &IntDefaultHandler,                        /* UART5 global interrupt                                              */
+    &IntDefaultHandler,                     /* TIM6 global interrupt, DAC1 and DAC2 underrun error interrupt       */
+    &IntDefaultHandler,                         /* TIM7 global interrupt                                               */
+    &IntDefaultHandler,                 /* DMA2 Stream0 global interrupt                                       */
+    &IntDefaultHandler,                 /* DMA2 Stream1 global interrupt                                       */
+    &IntDefaultHandler,                 /* DMA2 Stream2 global interrupt                                       */
+    &IntDefaultHandler,                 /* DMA2 Stream3 global interrupt                                       */
+    &IntDefaultHandler,                 /* DMA2 Stream4 global interrupt                                       */
+    &IntDefaultHandler,                          /* Ethernet global interrupt                                           */
+    &IntDefaultHandler,                     /* Ethernet Wakeup through EXTI line                                   */
+    &IntDefaultHandler,                      /* CAN2 TX interrupts                                                  */
+    &IntDefaultHandler,                     /* CAN2 RX0 interrupts                                                 */
+    &IntDefaultHandler,                     /* CAN2 RX1 interrupts                                                 */
+    &IntDefaultHandler,                     /* CAN2 SCE interrupt                                                  */
+    &IntDefaultHandler,                       /* USB On The Go FS global interrupt                                   */
+    &IntDefaultHandler,                 /* DMA2 Stream5 global interrupt                                       */
+    &IntDefaultHandler,                 /* DMA2 Stream6 global interrupt                                       */
+    &IntDefaultHandler,                 /* DMA2 Stream7 global interrupt                                       */
+    &IntDefaultHandler,                       /* USART6 global interrupt                                             */
+    &IntDefaultHandler,                      /* I2C3 event interrupt                                                */
+    &IntDefaultHandler,                      /* I2C3 error interrupt                                                */
+    &IntDefaultHandler,               /* USB On The Go HS End Point 1 Out global interrupt                   */
+    &IntDefaultHandler,                /* USB On The Go HS End Point 1 In global interrupt                    */
+    &IntDefaultHandler,                  /* USB On The Go HS Wakeup through EXTI interrupt                      */
+    &IntDefaultHandler,                       /* USB On The Go HS global interrupt                                   */
+    &IntDefaultHandler,                         /* DCMI global interrupt                                               */
+    &IntDefaultHandler,                         /* CRYP crypto global interrupt                                        */
+    &IntDefaultHandler,                     /* Hash and Rng global interrupt                                       */
+    &IntDefaultHandler,                          /* Floating point unit interrupt                                       */
+    &IntDefaultHandler,                        /* UART7 global interrupt                                              */
+    &IntDefaultHandler,                        /* UART 8 global interrupt                                             */
+    &IntDefaultHandler,                         /* SPI 4 global interrupt                                              */
+    &IntDefaultHandler,                         /* SPI 5 global interrupt                                              */
+    &IntDefaultHandler,                         /* SPI 6 global interrupt                                              */
+    &IntDefaultHandler,                         /* SAI1 global interrupt                                               */
+    &IntDefaultHandler,                      /* LTDC global interrupt                                               */
+    &IntDefaultHandler,                    /* LCD-TFT global Error interrupt                                      */
+    &IntDefaultHandler,                        /* DMA2D global interrupt                                              */
+    &IntDefaultHandler,                         /* SAI2 global interrupt                                               */
+    &IntDefaultHandler,                      /* QuadSPI global interrupt                                            */
+    &IntDefaultHandler,                    /* LP Timer1 global interrupt                                          */
+    &IntDefaultHandler,                                       /* Reserved                                                            */
+    &IntDefaultHandler,                      /* I2C4 event interrupt                                                */
+    &IntDefaultHandler,                      /* I2C4 Error interrupt                                                */
+    &IntDefaultHandler,                      /* SPDIFRX global interrupt                                            */
+    &IntDefaultHandler,                      /* DSI host global interrupt                                           */
+    &IntDefaultHandler,                  /* DFSDM1 Filter 0 global interrupt                                    */
+    &IntDefaultHandler,                  /* DFSDM1 Filter 1 global interrupt                                    */
+    &IntDefaultHandler,                  /* DFSDM1 Filter 2 global interrupt                                    */
+    &IntDefaultHandler,                  /* DFSDM1 Filter 3 global interrupt                                    */
+    &IntDefaultHandler,                       /* SDMMC2 global interrupt                                             */
+    &IntDefaultHandler,                      /* CAN3 TX interrupt                                                   */
+    &IntDefaultHandler,                     /* CAN3 RX0 interrupt                                                  */
+    &IntDefaultHandler,                     /* CAN3 RX1 interrupt                                                  */
+    &IntDefaultHandler,                     /* CAN3 SCE interrupt                                                  */
+    &IntDefaultHandler,                         /* JPEG global interrupt                                               */
+    &IntDefaultHandler,                        /* MDIO slave global interrupt                                         */
+};
+
+/*******************************************************************************/
+/**/
+/* The following are constructs created by the linker, indicating where the*/
+/* the "data" and "bss" segments reside in memory.  The initializers for the*/
+/* for the "data" segment resides immediately following the "text" segment.*/
+/**/
+/*******************************************************************************/
+extern UBase_t __ramcode_load__;
+extern UBase_t __ramcode_start__;
+extern UBase_t __ramcode_end__;
+
+extern UBase_t __data_load__;
+extern UBase_t __data_start__;
+extern UBase_t __data_end__;
+
+extern UBase_t __bss_start__;
+extern UBase_t __bss_end__;
+
+/*******************************************************************************/
+/**/
+/* This is the code that gets called when the processor first starts execution*/
+/* following a reset event.  Only the absolutely necessary set is performed,*/
+/* after which the application supplied entry() routine is called.  Any fancy*/
+/* actions (such as making decisions based on the reset cause register, and*/
+/* resetting the bits in that register) are left solely in the hands of the*/
+/* application.*/
+/**/
+/*******************************************************************************/
+void
+ResetISR(void)
+{
+
+    {__asm volatile(" cpsid i");}
+    MCU__vSetPSPValue(_estack);
+    MCU__enSetStackActive(MCU_enSTACK_PSP);
+
+    MCU__vSetPSPValue(_estack);
+    MCU__vSetMSPValue(_main_estack);
+
+
+    /**/
+    /* Copy the ramcode segment initializers from flash to SRAM.*/
+    /**/
+    {
+        UBase_t *pui32SrcRamCode;
+        UBase_t *pui32DestRamCode;
+        pui32SrcRamCode = &__ramcode_load__;
+        pui32DestRamCode = &__ramcode_start__;
+        while(pui32DestRamCode <= &__ramcode_end__)
+        {
+            *pui32DestRamCode = *pui32SrcRamCode;
+            pui32SrcRamCode += 1UL;
+            pui32DestRamCode += 1UL;
+        }
+    }
+
+    /**/
+    /* Copy the ramcode segment initializers from flash to SRAM.*/
+    /**/
+    {
+        UBase_t *pui32SrcData;
+        UBase_t *pui32DestData;
+        pui32SrcData = (UBase_t*) &__data_load__;
+        pui32DestData = (UBase_t*) &__data_start__;
+        while(pui32DestData <= &__data_end__)
+        {
+            *pui32DestData = *pui32SrcData;
+            pui32SrcData += 1UL;
+            pui32DestData += 1UL;
+        }
+    }
+
+
+    /**/
+    /* Copy the ramcode segment initializers from flash to SRAM.*/
+    /**/
+    {
+        UBase_t *pui32DestBss;
+        pui32DestBss = (UBase_t*) &__bss_start__;
+        while(pui32DestBss <= &__bss_end__)
+        {
+            *pui32DestBss = 0UL;
+            pui32DestBss += 1UL;
+        }
+    }
+    /**/
+    /* Enable the float32_ting-point unit.  This must be done here to handle the*/
+    /* case where main() uses float32_ting-point and the function prologue saves*/
+    /* float32_ting-point registers (which will fault if float32_ting-point is not*/
+    /* enabled).  Any configuration of the float32_ting-point unit using DriverLib*/
+    /* APIs must be done here prior to the float32_ting-point unit being enabled.*/
+
+    FPU__enInit(FPU_enMODULE_0);
+    NVIC__enDisableAllInterrupts(NVIC_enMODULE_0);
+   /* SCB__enInit(SCB_enMODULE_0);
+    FLASH__enInit(FLASH_enMODULE_0);
+    FLASH__enSetPrefetchMode(FLASH_enMODULE_0, FLASH_enPREFETCH_MODE_DUAL);
+    FLASH__enEnablePrefetch(FLASH_enMODULE_0);
+    */
+    /**/
+    /* Call the application's entry point.*/
+    /**/
+
+
+    {__asm volatile(" cpsid i");}
+
+    main();
+}
+
+
+static void
+IntDefaultHandler(void)
+{
+    /**/
+    /* Go into an infinite loop.*/
+    /**/
+    while(1U)
+    {
+    }
+}
