@@ -6,8 +6,9 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="true"/>
-		<item key="selection" value="SCB_enSTATE_UNDEF"/>
+		<item key="selection" value="stack"/>
 		<list key="findhistory">
+			<item value="stack"/>
 			<item value="SCB_enSTATE_UNDEF"/>
 			<item value="EXACT"/>
 			<item value="INEXACT"/>
@@ -22,7 +23,6 @@
 			<item value="TICKINT"/>
 			<item value="SYSCLK"/>
 			<item value="SYSCLK8"/>
-			<item value="CLKSOURCE"/>
 		</list>
 		<list key="replacehistory">
 			<item value="NOREF"/>
