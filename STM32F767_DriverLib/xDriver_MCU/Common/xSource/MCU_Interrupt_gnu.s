@@ -66,8 +66,8 @@ MCU__enGetGlobalInterrupt:
  	.type MCU__vSetBasePriorityInterrupt, %function
 MCU__vSetBasePriorityInterrupt:
 	push    {r1,r2}
-	and     r1, r0, #0x7
-	lsl     r1, #0x5
+	and     r1, r0, #0xF
+	lsl     r1, #0x4
 	msr     BASEPRI, r1
 	dsb
 	isb
@@ -80,10 +80,10 @@ MCU__vSetBasePriorityInterrupt:
  	.type MCU__enSetBasePriorityInterrupt, %function
 MCU__enSetBasePriorityInterrupt:
 	push    {r1,r2}
-	and     r1, r0, #0x7
-	lsl     r1, #0x5
+	and     r1, r0, #0xF
+	lsl     r1, #0x4
 	mrs     r2, BASEPRI
-	ubfx    r0, r2, #5, #3
+	ubfx    r0, r2, #4, #4
 	msr     BASEPRI, r1
 	dsb
 	isb
@@ -97,8 +97,8 @@ MCU__enSetBasePriorityInterrupt:
 MCU__enGetBasePriorityInterrupt:
 	push    {r1,r2}
 	mrs     r1, BASEPRI
-	lsr     r0, r1, #0x5
-	and     r0, #0x7
+	lsr     r0, r1, #0x4
+	and     r0, #0xF
 	pop     {r1,r2}
 	bx      lr
 
@@ -211,8 +211,8 @@ MCU__enGetGlobalInterrupt_RAM:
  	.type MCU__vSetBasePriorityInterrupt_RAM, %function
 MCU__vSetBasePriorityInterrupt_RAM:
 	push    {r1,r2}
-	and     r1, r0, #0x7
-	lsl     r1, #0x5
+	and     r1, r0, #0xF
+	lsl     r1, #0x4
 	msr     BASEPRI, r1
 	dsb
 	isb
@@ -225,10 +225,10 @@ MCU__vSetBasePriorityInterrupt_RAM:
  	.type MCU__enSetBasePriorityInterrupt_RAM, %function
 MCU__enSetBasePriorityInterrupt_RAM:
 	push    {r1,r2}
-	and     r1, r0, #0x7
-	lsl     r1, #0x5
+	and     r1, r0, #0xF
+	lsl     r1, #0x4
 	mrs     r2, BASEPRI
-	ubfx    r0, r2, #5, #3
+	ubfx    r0, r2, #4, #4
 	msr     BASEPRI, r1
 	dsb
 	isb
@@ -242,8 +242,8 @@ MCU__enSetBasePriorityInterrupt_RAM:
 MCU__enGetBasePriorityInterrupt_RAM:
 	push    {r1,r2}
 	mrs     r1, BASEPRI
-	lsr     r0, r1, #0x5
-	and     r0, #0x7
+	lsr     r0, r1, #0x4
+	and     r0, #0xF
 	pop     {r1,r2}
 	bx      lr
 

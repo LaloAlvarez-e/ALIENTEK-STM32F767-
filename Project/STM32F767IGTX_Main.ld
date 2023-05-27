@@ -48,7 +48,8 @@ MEMORY
   DTCM_RAM     (rw)  : ORIGIN = 0x20000000,   LENGTH = 0x00020000
   SRAM_DATA    (rw)  : ORIGIN = 0x20020000,   LENGTH = 0x00040000
   SRAM_HEAP    (rw)  : ORIGIN = 0x20060000,   LENGTH = 0x00010000
-  SRAM_STACK   (rw)  : ORIGIN = 0x20070000,   LENGTH = 0x0000C000
+  SRAM_STACK   (rw)  : ORIGIN = 0x20070000,   LENGTH = 0x00006000
+  SRAM_MSTACK  (rw)  : ORIGIN = 0x20076000,   LENGTH = 0x00006000
   SRAM_CODE    (xrw) : ORIGIN = 0x2007C000,   LENGTH = 0x00004000
   MEMORY_B1    (rx)  : ORIGIN = 0x60000000,   LENGTH = 0x00000000
   SDRAM        (rw)  : ORIGIN = 0xD0000000,   LENGTH = 0x00800000
@@ -247,6 +248,19 @@ _Min_Stack_Size = __stack_end__ - _stack; /* required amount of stack */
 
 _estack = ORIGIN(SRAM_STACK) + LENGTH(SRAM_STACK); /* end of "RAM" Ram type memory */
 __stack_end__ = _estack;
+
+
+_Min_Main_Stack_Size = __main_stack_end__ - _main_stack; /* required amount of stack */
+    
+    .stack : ALIGN(0x8) {
+        _main_stack = .;
+        __main_stack = .;
+        KEEP(*(.main_stack))
+    } > SRAM_MSTACK
+
+
+_main_estack = ORIGIN(SRAM_MSTACK) + LENGTH(SRAM_MSTACK); /* end of "RAM" Ram type memory */
+__main_stack_end__ = _main_estack;
 
   /* Remove information from the compiler libraries */
   /DISCARD/ :

@@ -24,6 +24,7 @@
 #include <xDriver_MCU/Common/xHeader/MCU_WriteReg.h>
 
 #include <xDriver_MCU/Common/xHeader/MCU_Interrupt.h>
+#include <xDriver_MCU/Common/xHeader/MCU_Basics.h>
 
 MCU_nERROR MCU__enWriteRegister_RAM(const MCU_Register_t* const pstRegisterDataArg)
 {

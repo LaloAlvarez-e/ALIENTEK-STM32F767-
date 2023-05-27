@@ -23,10 +23,11 @@
 /*******************************************************************************/
 
 #include <xUtils/Standard/Standard.h>
-#include <xApplication_MCU/Core/SCB/SCB.h>
+/*#include <xApplication_MCU/Core/SCB/SCB.h>*/
+#include <xDriver_MCU/Common/MCU_Common.h>
 #include <xDriver_MCU/Core/FPU/FPU.h>
 #include <xDriver_MCU/Core/NVIC/NVIC.h>
-#include <xApplication_MCU/FLASH/FLASH.h>
+/*#include <xApplication_MCU/FLASH/FLASH.h>*/
 
 /*******************************************************************************/
 /**/
@@ -37,6 +38,7 @@ void ResetISR(void);
 static void IntDefaultHandler(void);
 
 extern UBase_t _estack;
+extern UBase_t _main_estack;
 
 /*******************************************************************************/
 /**/
@@ -69,7 +71,7 @@ __attribute__ ((section(".intvecs")))
 void (* const g_pfnVectors[130UL])(void) =
 {
 
-    (void (*)(void))&_estack,
+    (void (*)(void))&_main_estack,
     &ResetISR,
     &IntDefaultHandler,
     &IntDefaultHandler,
@@ -228,47 +230,59 @@ extern UBase_t __bss_end__;
 void
 ResetISR(void)
 {
-    UBase_t *pui32SrcRamCode = (UBase_t*) 0UL;
-    UBase_t *pui32DestRamCode = (UBase_t*) 0UL;
-    UBase_t *pui32SrcData = (UBase_t*) 0UL;
-    UBase_t *pui32DestData = (UBase_t*) 0UL;
-    UBase_t *pui32DestBss = (UBase_t*) 0UL;
-
 
     {__asm volatile(" cpsid i");}
+    MCU__vSetPSPValue(&_estack);
+    MCU__enSetStackActive(MCU_enSTACK_PSP);
+
+    MCU__vSetPSPValue(&_estack);
+    MCU__vSetMSPValue(&_main_estack);
+
+
     /**/
     /* Copy the ramcode segment initializers from flash to SRAM.*/
     /**/
-    pui32SrcRamCode = &__ramcode_load__;
-    pui32DestRamCode = &__ramcode_start__;
-    while(pui32DestRamCode <= &__ramcode_end__)
     {
-        *pui32DestRamCode = *pui32SrcRamCode;
-        pui32SrcRamCode += 1UL;
-        pui32DestRamCode += 1UL;
+        UBase_t *pui32SrcRamCode;
+        UBase_t *pui32DestRamCode;
+        pui32SrcRamCode = &__ramcode_load__;
+        pui32DestRamCode = &__ramcode_start__;
+        while(pui32DestRamCode <= &__ramcode_end__)
+        {
+            *pui32DestRamCode = *pui32SrcRamCode;
+            pui32SrcRamCode += 1UL;
+            pui32DestRamCode += 1UL;
+        }
     }
 
     /**/
     /* Copy the ramcode segment initializers from flash to SRAM.*/
     /**/
-    pui32SrcData = (UBase_t*) &__data_load__;
-    pui32DestData = (UBase_t*) &__data_start__;
-    while(pui32DestData <= &__data_end__)
     {
-        *pui32DestData = *pui32SrcData;
-        pui32SrcData += 1UL;
-        pui32DestData += 1UL;
+        UBase_t *pui32SrcData;
+        UBase_t *pui32DestData;
+        pui32SrcData = (UBase_t*) &__data_load__;
+        pui32DestData = (UBase_t*) &__data_start__;
+        while(pui32DestData <= &__data_end__)
+        {
+            *pui32DestData = *pui32SrcData;
+            pui32SrcData += 1UL;
+            pui32DestData += 1UL;
+        }
     }
 
 
     /**/
     /* Copy the ramcode segment initializers from flash to SRAM.*/
     /**/
-    pui32DestBss = (UBase_t*) &__bss_start__;
-    while(pui32DestBss <= &__bss_end__)
     {
-        *pui32DestBss = 0UL;
-        pui32DestBss += 1UL;
+        UBase_t *pui32DestBss;
+        pui32DestBss = (UBase_t*) &__bss_start__;
+        while(pui32DestBss <= &__bss_end__)
+        {
+            *pui32DestBss = 0UL;
+            pui32DestBss += 1UL;
+        }
     }
     /**/
     /* Enable the float32_ting-point unit.  This must be done here to handle the*/
@@ -279,10 +293,11 @@ ResetISR(void)
 
     FPU__enInit(FPU_enMODULE_0);
     NVIC__enDisableAllInterrupts(NVIC_enMODULE_0);
-    SCB__enInit(SCB_enMODULE_0);
+   /* SCB__enInit(SCB_enMODULE_0);
     FLASH__enInit(FLASH_enMODULE_0);
     FLASH__enSetPrefetchMode(FLASH_enMODULE_0, FLASH_enPREFETCH_MODE_DUAL);
     FLASH__enEnablePrefetch(FLASH_enMODULE_0);
+    */
     /**/
     /* Call the application's entry point.*/
     /**/

@@ -59,8 +59,8 @@ all: main-build
 main-build: Project.elf secondary-outputs
 
 dependents:
-	-cd E:/GIt/ALIENTEK-STM32F767-/STM32F767_ApplicationLib/Debug && $(MAKE) clean all
-	-cd E:/GIt/ALIENTEK-STM32F767-/STM32F767_DriverLib/Debug && $(MAKE) clean all
+	-cd E:/GIt/ALIENTEK-STM32F767-/STM32F767_ApplicationLib/Debug && $(MAKE) all
+	-cd E:/GIt/ALIENTEK-STM32F767-/STM32F767_DriverLib/Debug && $(MAKE) all
 
 # Tool invocations
 Project.elf Project.map: $(OBJS) $(USER_OBJS) E:/GIt/ALIENTEK-STM32F767-/STM32F767_ApplicationLib/Debug/libSTM32F767_ApplicationLib.a E:/GIt/ALIENTEK-STM32F767-/STM32F767_DriverLib/Debug/libSTM32F767_DriverLib.a E:\GIt\ALIENTEK-STM32F767-\Project\STM32F767IGTX_Main.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
